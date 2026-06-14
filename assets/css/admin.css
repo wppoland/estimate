@@ -1,0 +1,104 @@
+/**
+ * Estimate — admin settings styles. Cards, inline help popovers and a polished,
+ * dark-mode-aware layout. Motion guarded by prefers-reduced-motion.
+ */
+
+.estimate-admin {
+    --estimate-card-bg: #fff;
+    --estimate-card-border: #dcdcde;
+    --estimate-muted: #50575e;
+    --estimate-accent: #2271b1;
+    max-width: 820px;
+}
+
+.estimate-intro {
+    background: linear-gradient(135deg, #f0f6fc, #f6f7f7);
+    border: 1px solid var(--estimate-card-border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin: 1rem 0 1.5rem;
+}
+
+.estimate-intro h2 {
+    margin-top: 0;
+}
+
+.estimate-intro p {
+    color: var(--estimate-muted);
+    max-width: 70ch;
+}
+
+.estimate-card {
+    background: var(--estimate-card-bg);
+    border: 1px solid var(--estimate-card-border);
+    border-radius: 10px;
+    padding: 0.5rem 1.5rem 1.25rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.estimate-card h2 {
+    border-bottom: 1px solid var(--estimate-card-border);
+    padding-bottom: 0.5rem;
+}
+
+.estimate-help {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-left: 0.35rem;
+    padding: 0;
+    border: 1px solid var(--estimate-card-border);
+    border-radius: 50%;
+    background: #f6f7f7;
+    color: var(--estimate-muted);
+    font-size: 11px;
+    line-height: 1;
+    cursor: help;
+    vertical-align: middle;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.estimate-help:hover,
+.estimate-help:focus-visible {
+    background: var(--estimate-accent);
+    color: #fff;
+    border-color: var(--estimate-accent);
+}
+
+.estimate-tip {
+    max-width: 320px;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--estimate-card-border);
+    border-radius: 8px;
+    background: #1d2327;
+    color: #fff;
+    font-size: 13px;
+    line-height: 1.5;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+    .estimate-admin {
+        --estimate-card-bg: #1e1e1e;
+        --estimate-card-border: #3c3c3c;
+        --estimate-muted: #bbb;
+    }
+
+    .estimate-intro {
+        background: linear-gradient(135deg, #1c2530, #1e1e1e);
+    }
+
+    .estimate-help {
+        background: #2c2c2c;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .estimate-help {
+        transition: none;
+    }
+}

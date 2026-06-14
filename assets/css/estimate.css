@@ -1,0 +1,182 @@
+/**
+ * Estimate — storefront styles.
+ *
+ * Modern, theme-friendly defaults driven by custom properties so themes can
+ * override the look without fighting specificity. Motion is guarded by
+ * prefers-reduced-motion and colours adapt to a dark colour-scheme.
+ */
+
+.estimate-quote {
+    --estimate-radius: 8px;
+    --estimate-border: rgba(0, 0, 0, 0.12);
+    --estimate-muted: rgba(0, 0, 0, 0.6);
+    --estimate-accent: #2563eb;
+    --estimate-success-bg: #ecfdf5;
+    --estimate-success-fg: #065f46;
+    --estimate-error-bg: #fef2f2;
+    --estimate-error-fg: #991b1b;
+
+    max-width: 760px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .estimate-quote {
+        --estimate-border: rgba(255, 255, 255, 0.18);
+        --estimate-muted: rgba(255, 255, 255, 0.65);
+        --estimate-success-bg: rgba(6, 95, 70, 0.25);
+        --estimate-success-fg: #6ee7b7;
+        --estimate-error-bg: rgba(153, 27, 27, 0.25);
+        --estimate-error-fg: #fca5a5;
+    }
+}
+
+.estimate-quote__intro {
+    margin-bottom: 1.5rem;
+    color: var(--estimate-muted);
+}
+
+.estimate-quote__table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+.estimate-quote__table th,
+.estimate-quote__table td {
+    text-align: left;
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid var(--estimate-border);
+    vertical-align: middle;
+}
+
+.estimate-quote__qty {
+    width: 5rem;
+    max-width: 100%;
+}
+
+.estimate-quote__remove-cell {
+    text-align: right;
+    width: 3rem;
+}
+
+.estimate-quote__remove {
+    background: none;
+    border: 0;
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--estimate-muted);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--estimate-radius);
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.estimate-quote__remove:hover,
+.estimate-quote__remove:focus-visible {
+    color: var(--estimate-error-fg);
+    background: var(--estimate-error-bg);
+}
+
+.estimate-quote__list-actions {
+    margin-bottom: 2rem;
+}
+
+.estimate-quote__form {
+    border-top: 1px solid var(--estimate-border);
+    padding-top: 1.5rem;
+}
+
+.estimate-quote__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+}
+
+.estimate-quote__field input,
+.estimate-quote__field textarea {
+    width: 100%;
+    max-width: 480px;
+}
+
+.estimate-quote__req {
+    color: var(--estimate-error-fg);
+}
+
+.estimate-quote__error {
+    color: var(--estimate-error-fg);
+    font-size: 0.875em;
+}
+
+.estimate-quote__notice {
+    border-radius: var(--estimate-radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.estimate-quote__notice--success {
+    background: var(--estimate-success-bg);
+    color: var(--estimate-success-fg);
+}
+
+.estimate-quote__notice--error {
+    background: var(--estimate-error-bg);
+    color: var(--estimate-error-fg);
+}
+
+.estimate-quote__empty {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--estimate-muted);
+}
+
+/* Storefront "Add to quote" button feedback. */
+.estimate-add-to-quote {
+    transition: opacity 0.15s ease;
+}
+
+.estimate-add-to-quote.estimate-added {
+    opacity: 0.75;
+}
+
+.estimate-add-to-quote[aria-busy="true"] {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+@media (max-width: 600px) {
+    .estimate-quote__table thead {
+        display: none;
+    }
+
+    .estimate-quote__table,
+    .estimate-quote__table tbody,
+    .estimate-quote__table tr,
+    .estimate-quote__table td {
+        display: block;
+        width: 100%;
+    }
+
+    .estimate-quote__table td {
+        border-bottom: 0;
+        padding: 0.35rem 0.5rem;
+    }
+
+    .estimate-quote__table tr {
+        border-bottom: 1px solid var(--estimate-border);
+        padding: 0.5rem 0;
+    }
+
+    .estimate-quote__table td[data-label]::before {
+        content: attr(data-label) ": ";
+        font-weight: 600;
+        color: var(--estimate-muted);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .estimate-add-to-quote,
+    .estimate-quote__remove {
+        transition: none;
+    }
+}
