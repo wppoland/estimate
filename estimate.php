@@ -50,8 +50,10 @@ add_action('plugins_loaded', static function (): void {
         return;
     }
 
+    // Translations load automatically on WordPress.org-hosted plugins (WP 4.6+)
+    // via the slug + Domain Path header, so no manual load_plugin_textdomain()
+    // call is needed (and Plugin Check discourages it).
     add_action('init', static function (): void {
-        load_plugin_textdomain('estimate', false, dirname(plugin_basename(__FILE__)) . '/languages');
         Plugin::instance()->boot();
     }, 0);
 }, 10);
