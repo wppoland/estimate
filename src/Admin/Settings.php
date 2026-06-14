@@ -13,8 +13,8 @@ use Estimate\Contract\HasHooks;
  *
  * Stores everything in the `estimate_settings` option (array): the master
  * toggle, quote mode (all / selected), whether to hide the price, the storefront
- * button text, the merchant recipient and an optional quote-page intro. All
- * output is escaped; all input is sanitised on save.
+ * button text and the merchant recipient. All output is escaped; all input is
+ * sanitised on save.
  */
 final class Settings implements HasHooks
 {
@@ -23,9 +23,6 @@ final class Settings implements HasHooks
     private const GROUP  = 'estimate_settings_group';
 
     private const MODES = ['selected', 'all'];
-
-    /** Incremented to give each inline-help control a unique id/anchor. */
-    private int $helpSeq = 0;
 
     public function registerHooks(): void
     {
@@ -115,7 +112,6 @@ final class Settings implements HasHooks
                             <tr>
                                 <th scope="row">
                                     <?php esc_html_e('Enable quote requests', 'estimate'); ?>
-                                    <?php $this->help(__('The master switch. When off, nothing changes on your storefront and the quote button and page are not rendered.', 'estimate')); ?>
                                 </th>
                                 <td>
                                     <label for="estimate_enabled">
@@ -129,7 +125,6 @@ final class Settings implements HasHooks
                             <tr>
                                 <th scope="row">
                                     <label for="estimate_mode"><?php esc_html_e('Quote mode', 'estimate'); ?></label>
-                                    <?php $this->help(__('"Selected products" turns the quote button on only for products you flag in the product editor. "All products" turns it on for your entire catalogue.', 'estimate')); ?>
                                 </th>
                                 <td>
                                     <select id="estimate_mode" name="<?php echo esc_attr(self::OPTION); ?>[mode]">
@@ -148,7 +143,6 @@ final class Settings implements HasHooks
                             <tr>
                                 <th scope="row">
                                     <?php esc_html_e('Hide price', 'estimate'); ?>
-                                    <?php $this->help(__('Hide the product price on quote-enabled products so customers focus on requesting a quote. The add-to-cart button is always replaced regardless of this setting.', 'estimate')); ?>
                                 </th>
                                 <td>
                                     <label for="estimate_hide_price">
@@ -162,7 +156,6 @@ final class Settings implements HasHooks
                             <tr>
                                 <th scope="row">
                                     <label for="estimate_button_text"><?php esc_html_e('Button text', 'estimate'); ?></label>
-                                    <?php $this->help(__('The label shown on the storefront button. Leave blank to use the default, "Add to quote".', 'estimate')); ?>
                                 </th>
                                 <td>
                                     <input type="text" id="estimate_button_text" class="regular-text"
@@ -182,25 +175,15 @@ final class Settings implements HasHooks
                             <tr>
                                 <th scope="row">
                                     <label for="estimate_recipient"><?php esc_html_e('Recipient email', 'estimate'); ?></label>
-                                    <?php $this->help(__('Where new quote requests are emailed. Leave blank to use the site admin email.', 'estimate')); ?>
                                 </th>
                                 <td>
                                     <input type="email" id="estimate_recipient" class="regular-text"
                                         name="<?php echo esc_attr(self::OPTION); ?>[recipient]"
                                         value="<?php echo esc_attr((string) ($settings['recipient'] ?? '')); ?>"
                                         placeholder="<?php echo esc_attr((string) get_option('admin_email')); ?>" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <label for="estimate_quote_intro"><?php esc_html_e('Quote page intro', 'estimate'); ?></label>
-                                    <?php $this->help(__('Optional text shown above the quote list on the quote page. Basic HTML is allowed.', 'estimate')); ?>
-                                </th>
-                                <td>
-                                    <textarea id="estimate_quote_intro" class="large-text" rows="3"
-                                        name="<?php echo esc_attr(self::OPTION); ?>[quote_intro]"><?php
-                                        echo esc_textarea((string) ($settings['quote_intro'] ?? ''));
-                                    ?></textarea>
+                                    <p class="description">
+                                        <?php esc_html_e('Where new quote requests are emailed. Leave blank to use the site admin email.', 'estimate'); ?>
+                                    </p>
                                 </td>
                             </tr>
                         </tbody>
@@ -209,23 +192,6 @@ final class Settings implements HasHooks
 
                 <?php submit_button(); ?>
             </form>
-        </div>
-        <?php
-    }
-
-    /**
-     * Render an accessible inline-help affordance using the native Popover API.
-     */
-    private function help(string $text): void
-    {
-        $id = 'estimate-help-' . (++$this->helpSeq);
-        ?>
-        <button type="button" class="estimate-help"
-            aria-label="<?php esc_attr_e('More information', 'estimate'); ?>"
-            aria-describedby="<?php echo esc_attr($id); ?>"
-            popovertarget="<?php echo esc_attr($id); ?>">?</button>
-        <div id="<?php echo esc_attr($id); ?>" class="estimate-tip" role="tooltip" popover hidden>
-            <?php echo esc_html($text); ?>
         </div>
         <?php
     }
@@ -256,7 +222,6 @@ final class Settings implements HasHooks
             'hide_price'  => ! empty($raw['hide_price']),
             'button_text' => isset($raw['button_text']) ? sanitize_text_field((string) $raw['button_text']) : '',
             'recipient'   => is_email($recipient) ? $recipient : '',
-            'quote_intro' => isset($raw['quote_intro']) ? wp_kses_post((string) $raw['quote_intro']) : '',
         ];
     }
 

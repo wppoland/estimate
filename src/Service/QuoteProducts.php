@@ -14,18 +14,17 @@ defined('ABSPATH') || exit;
  * On products that are quote-enabled (either every product in "all" mode, or the
  * individually flagged ones in "selected" mode) this hides the price and the
  * add-to-cart button and renders an "Add to quote" button in their place, on
- * both single product pages and shop/category loops. Additions are handled
- * progressively: a real link works without JS, and an AJAX handler upgrades it
- * to an in-place experience.
+ * both single product pages and shop/category loops. Each "Add to quote" button
+ * is a real link that adds the product and lands on the quote page, so the flow
+ * works without any JavaScript.
  */
 final class QuoteProducts implements HasHooks
 {
     /** Product meta flag set by the merchant in "selected" mode. */
     public const META_ENABLED = '_estimate_quote_enabled';
 
-    private const OPTION   = 'estimate_settings';
-    private const NONCE    = 'estimate_quote';
-    private const AJAX_ADD = 'estimate_add';
+    private const OPTION = 'estimate_settings';
+    private const NONCE  = 'estimate_quote';
 
     public function __construct(private readonly QuoteList $list)
     {
@@ -44,11 +43,7 @@ final class QuoteProducts implements HasHooks
 
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
 
-        // AJAX (both logged-in and guest).
-        add_action('wp_ajax_' . self::AJAX_ADD, [$this, 'ajaxAdd']);
-        add_action('wp_ajax_nopriv_' . self::AJAX_ADD, [$this, 'ajaxAdd']);
-
-        // Handle the no-JS add link.
+        // Handle the add-to-quote link.
         add_action('template_redirect', [$this, 'handleAddLink']);
     }
 
@@ -59,17 +54,9 @@ final class QuoteProducts implements HasHooks
     {
         $mode = (string) ($this->settings()['mode'] ?? 'selected');
 
-        $isQuote = 'all' === $mode
+        return 'all' === $mode
             ? true
             : 'yes' === $product->get_meta(self::META_ENABLED);
-
-        /**
-         * Filter whether a product is quote-enabled.
-         *
-         * @param bool        $isQuote Whether the product is quote-only.
-         * @param \WC_Product $product The product being evaluated.
-         */
-        return (bool) apply_filters('estimate/is_quote_product', $isQuote, $product);
     }
 
     public function maybeHidePrice(mixed $price, mixed $product): mixed
@@ -146,24 +133,23 @@ final class QuoteProducts implements HasHooks
 
         $href = add_query_arg(
             [
-                'estimate_add'      => $product->get_id(),
-                'estimate_nonce'    => wp_create_nonce(self::NONCE),
+                'estimate_add'   => $product->get_id(),
+                'estimate_nonce' => wp_create_nonce(self::NONCE),
             ],
             $this->quotePageUrl(),
         );
 
         return sprintf(
-            '<a href="%1$s" class="%2$s" data-product-id="%3$d" data-added="%4$s">%5$s</a>',
+            '<a href="%1$s" class="%2$s">%3$s</a>',
             esc_url($href),
             esc_attr($classes),
-            (int) $product->get_id(),
-            $added ? '1' : '0',
             esc_html($added ? __('In your quote', 'estimate') : $label),
         );
     }
 
     /**
-     * No-JS fallback: add the product, then redirect to the quote page.
+     * Add the product from the "Add to quote" link, then redirect to the quote
+     * page.
      */
     public function handleAddLink(): void
     {
@@ -188,30 +174,6 @@ final class QuoteProducts implements HasHooks
         exit;
     }
 
-    /**
-     * AJAX: add a product to the quote list, return the new count.
-     */
-    public function ajaxAdd(): void
-    {
-        check_ajax_referer(self::NONCE, 'nonce');
-
-        $productId = isset($_POST['product_id']) ? absint(wp_unslash($_POST['product_id'])) : 0;
-        $product   = $productId > 0 ? wc_get_product($productId) : null;
-
-        if (! $product instanceof \WC_Product || ! $this->isQuoteProduct($product)) {
-            wp_send_json_error(['message' => __('That product cannot be added to a quote.', 'estimate')], 400);
-        }
-
-        $this->list->add($productId, 1);
-
-        wp_send_json_success([
-            'count'    => $this->list->count(),
-            'added'    => true,
-            'message'  => __('Added to your quote.', 'estimate'),
-            'quoteUrl' => $this->quotePageUrl(),
-        ]);
-    }
-
     public function enqueueAssets(): void
     {
         wp_enqueue_style(
@@ -219,26 +181,6 @@ final class QuoteProducts implements HasHooks
             ESTIMATE_URL . 'assets/css/estimate.css',
             [],
             \Estimate\VERSION,
-        );
-
-        wp_enqueue_script(
-            'estimate',
-            ESTIMATE_URL . 'assets/js/estimate.js',
-            [],
-            \Estimate\VERSION,
-            ['in_footer' => true, 'strategy' => 'defer'],
-        );
-
-        wp_localize_script(
-            'estimate',
-            'estimateData',
-            [
-                'ajaxUrl'  => admin_url('admin-ajax.php'),
-                'nonce'    => wp_create_nonce(self::NONCE),
-                'action'   => self::AJAX_ADD,
-                'addLabel' => $this->buttonLabel(),
-                'addedLabel' => __('In your quote', 'estimate'),
-            ],
         );
     }
 

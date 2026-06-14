@@ -13,7 +13,7 @@ orders and made-to-order products.
 - Per-visitor quote list (cookie-based), so logged-out shoppers can use it without an account.
 - An `[estimate_quote]` shortcode that shows the quote list and a request form.
 - On submit: emails the merchant and stores the request as a private record in wp-admin.
-- Accessible, mobile-friendly markup with a no-JavaScript fallback.
+- Accessible, mobile-friendly markup.
 
 ## Installation
 

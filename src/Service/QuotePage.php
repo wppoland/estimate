@@ -169,24 +169,12 @@ final class QuotePage implements HasHooks
             return (string) ob_get_clean();
         }
 
-        $this->renderIntro();
         $this->renderList($items);
         $this->renderForm();
 
         echo '</div>';
 
         return (string) ob_get_clean();
-    }
-
-    private function renderIntro(): void
-    {
-        $intro = trim((string) ($this->settings()['quote_intro'] ?? ''));
-
-        if ('' === $intro) {
-            return;
-        }
-
-        echo '<div class="estimate-quote__intro">' . wp_kses_post(wpautop($intro)) . '</div>';
     }
 
     private function renderThankYou(): void

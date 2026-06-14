@@ -30,7 +30,4 @@ return [
 
     // Merchant recipient for new quote requests. Empty = site admin email.
     'recipient' => '',
-
-    // Optional intro shown above the quote list on the quote page.
-    'quote_intro' => '',
 ];

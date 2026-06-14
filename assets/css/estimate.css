@@ -30,11 +30,6 @@
     }
 }
 
-.estimate-quote__intro {
-    margin-bottom: 1.5rem;
-    color: var(--estimate-muted);
-}
-
 .estimate-quote__table {
     width: 100%;
     border-collapse: collapse;
@@ -137,11 +132,6 @@
 
 .estimate-add-to-quote.estimate-added {
     opacity: 0.75;
-}
-
-.estimate-add-to-quote[aria-busy="true"] {
-    opacity: 0.6;
-    pointer-events: none;
 }
 
 @media (max-width: 600px) {

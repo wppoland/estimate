@@ -27,11 +27,6 @@ final class Plugin
         return self::$instance ??= new self();
     }
 
-    public function container(): Container
-    {
-        return $this->container;
-    }
-
     public function boot(): void
     {
         if ($this->booted) {
@@ -49,12 +44,5 @@ final class Plugin
                 $service->registerHooks();
             }
         }
-
-        /**
-         * Fires after the plugin has fully booted. Add-ons can hook here.
-         *
-         * @param Plugin $plugin The booted plugin instance.
-         */
-        do_action('estimate/booted', $this);
     }
 }

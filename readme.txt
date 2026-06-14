@@ -33,7 +33,7 @@ where prices are negotiated rather than fixed.
 * Quantity editing and item removal on the quote page.
 * On submit: emails the merchant and stores the request as a private custom post type.
 * Configurable recipient email and storefront button text.
-* Accessible, mobile-friendly storefront markup with a no-JavaScript fallback.
+* Accessible, mobile-friendly storefront markup.
 * Translation ready (POT included) and clean uninstall.
 * HPOS and cart/checkout blocks compatible.
 

@@ -65,11 +65,6 @@ final class QuoteList implements HasHooks
         return $clean;
     }
 
-    public function count(): int
-    {
-        return count($this->items());
-    }
-
     public function has(int $productId): bool
     {
         return isset($this->raw()[$productId]);
