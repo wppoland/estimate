@@ -5,8 +5,7 @@ on:
     tags: ['v[0-9]+.[0-9]+.[0-9]+']
   workflow_dispatch:
 
-# The reusable workflow's release job creates a GitHub release; grant it here
-# (a reusable workflow cannot exceed the caller's GITHUB_TOKEN permissions).
+# The release job creates a GitHub release, so grant write access to contents.
 permissions:
   contents: write
 

@@ -1,52 +1,36 @@
-# plugin-template
+# Estimate - Request a Quote for WooCommerce
 
-GitHub **template repo** for a WPPoland storefront FREE plugin. A thin adapter over
-`wppoland/storefront-kit`, pre-wired to the reusable CI/release workflows. Spin up a new plugin in
-minutes instead of rebuilding CI each time.
+Estimate turns WooCommerce products into quote requests. Instead of an add-to-cart button,
+quote-enabled products show an "Add to quote" button (and can optionally hide the price). Customers
+build a quote list and send you their details from a simple form — ideal for B2B, wholesale, bulk
+orders and made-to-order products.
 
-## Create a new plugin
+## Features
 
-> 🔔 **You must create a new repository for each plugin.** FREE → a **public** repo
-> `wppoland/<slug>`. PRO → a separate **private** repo `wppoland/<slug>-pro`.
+- Two quote modes: enable quotes for selected products or for all products.
+- Replaces the add-to-cart button with an "Add to quote" button on product pages and listings.
+- Optionally hides the price on quote-enabled products.
+- Per-visitor quote list (cookie-based), so logged-out shoppers can use it without an account.
+- An `[estimate_quote]` shortcode that shows the quote list and a request form.
+- On submit: emails the merchant and stores the request as a private record in wp-admin.
+- Accessible, mobile-friendly markup with a no-JavaScript fallback.
 
-1. **"Use this template" → create `wppoland/<slug>`** (public).
-2. **Run the scaffold script** — replaces all tokens and renames `estimate.php → <slug>.php`
-   (cross-platform; review the diff before committing):
-   ```bash
-   python3 scripts/init.py restock Restock "Restock" "Back-in-stock notifications for WooCommerce"
-   #                        ^slug   ^Namespace ^Name    ^short description
-   rm scripts/init.py
-   ```
-   Tokens it replaces (case-sensitive):
+## Installation
 
-   | Token | Replace with | Example |
-   |---|---|---|
-   | `estimate` | lowercase slug = text-domain = i18n domain | `restock` |
-   | `Estimate` | PSR-4 PHP namespace | `Restock` |
-   | `ESTIMATE` (in `define()`) | uppercased namespace | `RESTOCK` |
-   | `estimate_` | option/meta prefix (slug, dashes→underscores) | `restock_` |
-   | `Estimate - Request a Quote for WooCommerce` / `Let customers request a quote instead of buying directly — ideal for B2B and made-to-order.` / `Let customers request a quote instead of buying directly — ideal for B2B and made-to-order.` | name + descriptions | … |
-3. `composer install` — resolves `wppoland/storefront-kit ^1.0` from VCS (no symlink). Implement
-   your adapter in `src/`, wire it in `config/services.php` + `config/hooks.php`.
-   *(For local atomic kit+adapter dev, see the kit README's path-override note.)*
-4. Add repo secrets: **`WPORG_SVN_USERNAME`**, **`WPORG_SVN_PASSWORD`**.
-5. Drop wp.org assets in `.wordpress-org/`; fill in `readme.txt`.
-6. Add a `PluginEntry` to `plogins` `packages/registry/src/plugins.config.ts` + a docs folder.
-7. **Release:** bump the header `Version:` + `readme.txt` Stable tag, tag `vX.Y.Z`, push →
-   `_release-free.yml` runs CI, vendors the kit, and auto-deploys to wp.org SVN.
+1. Upload the plugin to `/wp-content/plugins/estimate`, or install it via Plugins → Add New.
+2. Activate it. WooCommerce must be active.
+3. Go to WooCommerce → Estimate and choose your quote mode and options.
+4. Create a page with the `[estimate_quote]` shortcode to host the quote list and request form.
 
-## What's wired
+## Frequently Asked Questions
 
-- **Bootstrap** (`estimate.php`): PHP/WC guards, HPOS + cart-blocks compat, `init` priority 0
-  boot, `do_action('estimate/booted')` fired from `Plugin::boot()` (the hook a PRO companion extends).
-- **Autoload** (`autoload.php`): Composer vendor autoloader + PSR-4 fallback (incl. the kit).
-- **DI**: `src/Plugin.php` singleton + `src/Container.php`; services in `config/services.php`,
-  boot order in `config/hooks.php`, defaults in `config/defaults.php`; `src/Migrator.php`.
-- **CI/Release**: `.github/workflows/{ci,release}.yml` call `wppoland/workflows@v1`.
-- **Quality**: `phpcs.xml.dist` (WPCS), `phpstan.neon.dist` (level 6 + WC stubs), `.distignore`
-  (ships `vendor/` so the kit travels), `.wp-env.json`.
+**Does it require WooCommerce?**
+Yes. WooCommerce must be installed and active.
 
-## PRO companion (`<slug>-pro`, private)
+**Where do quote requests go?**
+Each submission is emailed to the recipient you set (or the site admin email by default) and saved
+as a private "Quote Request" record under the WooCommerce menu in wp-admin.
 
-Create a separate private repo. It hooks `add_action('<slug>/booted', …)`, bundles the Freemius
-SDK, and releases via `wppoland/workflows/.github/workflows/_release-pro.yml@v1`.
+Built by WPPoland — https://plogins.com
+
+License: GPL-2.0-or-later
