@@ -205,10 +205,25 @@ final class QuotePage implements HasHooks
      */
     private function renderList(array $items): void
     {
+        $count = count($items);
         ?>
         <form method="post" class="estimate-quote__list-form">
             <?php wp_nonce_field(self::LIST_NONCE, 'estimate_list_nonce'); ?>
             <input type="hidden" name="estimate_list_action" value="update" />
+            <p class="estimate-quote__slip-head">
+                <span><?php esc_html_e('Estimate worksheet', 'estimate'); ?></span>
+                <span class="estimate-quote__slip-count">
+                    <?php
+                    echo esc_html(
+                        sprintf(
+                            /* translators: %d: number of line items on the quote worksheet */
+                            _n('%d line', '%d lines', $count, 'estimate'),
+                            $count,
+                        ),
+                    );
+                    ?>
+                </span>
+            </p>
             <table class="estimate-quote__table">
                 <thead>
                     <tr>

@@ -1,26 +1,46 @@
 /**
  * Estimate — storefront styles.
  *
- * Modern, theme-friendly defaults driven by custom properties so themes can
- * override the look without fighting specificity. Motion is guarded by
- * prefers-reduced-motion and colours adapt to a dark colour-scheme.
+ * The quote page reads like an estimator's worksheet: a ruled ledger of
+ * requested items totted up by hand, then signed off with the request form.
+ * The accent is a pencil-ruled ledger ochre (not a stock SaaS blue) and the
+ * single crafted moment is the "tally rule" — the under-total stroke a
+ * quantity surveyor draws beneath a column of figures — which sweeps in under
+ * the submit button the instant the request is sent.
+ *
+ * Everything is driven by themeable --estimate-* tokens with theme-inheriting
+ * fallbacks, so it sits naturally in any theme. Motion is guarded by
+ * prefers-reduced-motion and colours adapt to a dark colour-scheme. There is
+ * no layout shift: the tally rule is a transform on a pseudo-element.
  */
 
 .estimate-quote {
+    /* Ledger ochre — the colour of a pencil-ruled worksheet, not stock blue. */
+    --estimate-accent: #b3791f;
+    --estimate-accent-soft: rgba(179, 121, 31, 0.14);
+    --estimate-ink: var(--wp--preset--color--contrast, #2b2722);
+    --estimate-rule: rgba(179, 121, 31, 0.55);
+    --estimate-paper: rgba(179, 121, 31, 0.05);
     --estimate-radius: 8px;
+    --estimate-gap: 1.5rem;
     --estimate-border: rgba(0, 0, 0, 0.12);
     --estimate-muted: rgba(0, 0, 0, 0.6);
-    --estimate-accent: #2563eb;
     --estimate-success-bg: #ecfdf5;
     --estimate-success-fg: #065f46;
     --estimate-error-bg: #fef2f2;
     --estimate-error-fg: #991b1b;
 
     max-width: 760px;
+    color: var(--estimate-ink);
 }
 
 @media (prefers-color-scheme: dark) {
     .estimate-quote {
+        --estimate-accent: #e0a94a;
+        --estimate-accent-soft: rgba(224, 169, 74, 0.16);
+        --estimate-ink: var(--wp--preset--color--contrast, #ece7df);
+        --estimate-rule: rgba(224, 169, 74, 0.6);
+        --estimate-paper: rgba(224, 169, 74, 0.06);
         --estimate-border: rgba(255, 255, 255, 0.18);
         --estimate-muted: rgba(255, 255, 255, 0.65);
         --estimate-success-bg: rgba(6, 95, 70, 0.25);
@@ -30,10 +50,40 @@
     }
 }
 
+/* The list reads as an estimator's worksheet: a titled slip on ruled paper. */
+.estimate-quote__list-form {
+    position: relative;
+    border: 1px solid var(--estimate-border);
+    border-top: 3px solid var(--estimate-accent);
+    border-radius: var(--estimate-radius);
+    background: var(--estimate-paper);
+    padding: 1.25rem 1.25rem 0.75rem;
+    margin-bottom: var(--estimate-gap);
+}
+
+.estimate-quote__slip-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0 0 0.75rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--estimate-accent);
+}
+
+.estimate-quote__slip-count {
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--estimate-muted);
+}
+
 .estimate-quote__table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
 }
 
 .estimate-quote__table th,
@@ -42,6 +92,15 @@
     padding: 0.75rem 0.5rem;
     border-bottom: 1px solid var(--estimate-border);
     vertical-align: middle;
+}
+
+/* Ledger rule: the ochre baseline drawn under the column headers. */
+.estimate-quote__table thead th {
+    font-size: 0.74rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--estimate-muted);
+    border-bottom: 2px solid var(--estimate-rule);
 }
 
 .estimate-quote__qty {
@@ -73,12 +132,15 @@
 }
 
 .estimate-quote__list-actions {
-    margin-bottom: 2rem;
+    margin: 0;
 }
 
 .estimate-quote__form {
-    border-top: 1px solid var(--estimate-border);
-    padding-top: 1.5rem;
+    padding-top: 0.5rem;
+}
+
+.estimate-quote__form > h2 {
+    margin-top: 0;
 }
 
 .estimate-quote__field {
@@ -92,6 +154,12 @@
 .estimate-quote__field textarea {
     width: 100%;
     max-width: 480px;
+}
+
+.estimate-quote__field input:focus,
+.estimate-quote__field textarea:focus {
+    outline: 2px solid var(--estimate-accent);
+    outline-offset: 1px;
 }
 
 .estimate-quote__req {
@@ -123,6 +191,63 @@
     text-align: center;
     padding: 2rem 1rem;
     color: var(--estimate-muted);
+}
+
+/*
+ * THE MOMENT: "Send quote request" is an estimate being signed off. The submit
+ * sits on a baseline; pressing it draws the tally rule — the under-total stroke
+ * an estimator rules beneath a column of figures before writing the total —
+ * left to right beneath the button. No layout shift: the rule is a scaleX
+ * transform on a pseudo-element that already occupies its space.
+ */
+.estimate-quote__submit {
+    position: relative;
+    display: inline-block;
+    margin: 0.5rem 0 0;
+}
+
+.estimate-quote__submit::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -7px;
+    height: 2px;
+    background: var(--estimate-accent);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1);
+    pointer-events: none;
+}
+
+.estimate-quote__submit .button {
+    position: relative;
+}
+
+/* The rule is drawn the moment the figures are totted up (button pressed). */
+.estimate-quote__submit.is-tallying::after {
+    transform: scaleX(1);
+}
+
+/* A second, fainter pencil ghost-line under the main rule for hand-ruled feel. */
+.estimate-quote__submit::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -11px;
+    height: 1px;
+    background: var(--estimate-rule);
+    border-radius: 1px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.42s cubic-bezier(0.22, 0.61, 0.36, 1) 0.06s;
+    pointer-events: none;
+}
+
+.estimate-quote__submit.is-tallying::before {
+    transform: scaleX(0.96);
 }
 
 /* Storefront "Add to quote" button feedback. */
@@ -167,6 +292,12 @@
 @media (prefers-reduced-motion: reduce) {
     .estimate-add-to-quote,
     .estimate-quote__remove {
+        transition: none;
+    }
+
+    /* Honour the rule as a static mark, no sweep. */
+    .estimate-quote__submit::after,
+    .estimate-quote__submit::before {
         transition: none;
     }
 }

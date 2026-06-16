@@ -182,6 +182,14 @@ final class QuoteProducts implements HasHooks
             [],
             \Estimate\VERSION,
         );
+
+        wp_enqueue_script(
+            'estimate',
+            ESTIMATE_URL . 'assets/js/estimate.js',
+            [],
+            \Estimate\VERSION,
+            true,
+        );
     }
 
     private function buttonLabel(): string
