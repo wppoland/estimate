@@ -13,14 +13,18 @@ Let customers request a quote instead of buying directly — ideal for B2B and m
 
 == Description ==
 
-Estimate turns WooCommerce products into quote requests. Instead of an
-add-to-cart button, quote-enabled products show an **Add to quote** button (and,
-optionally, hide the price). Customers build a quote list, then send you their
-details from a simple request form. Each request is emailed to you and saved as a
-private record you can review in wp-admin.
+Estimate turns WooCommerce products into quote requests. On quote-enabled
+products it swaps the add-to-cart button for an **Add to quote** button, and can
+hide the price as well. Customers collect the products they want into a quote
+list and send their details through a short request form. Each submission is
+emailed to you and saved as a private record you can open in wp-admin.
 
-It is ideal for B2B stores, wholesale, bulk orders and made-to-order products
-where prices are negotiated rather than fixed.
+It suits B2B stores, wholesale, bulk orders and made-to-order products where
+prices are negotiated rather than fixed.
+
+The plugin isn't on WordPress.org yet. The code, releases and issue tracker
+live on GitHub: https://github.com/wppoland/estimate — bug reports and pull
+requests are welcome there.
 
 = Features =
 
@@ -28,14 +32,15 @@ where prices are negotiated rather than fixed.
 * Per-product toggle in the product editor (selected mode).
 * Replaces the add-to-cart button with an **Add to quote** button on product pages and listings.
 * Optionally hides the price on quote-enabled products.
-* Per-visitor quote list (cookie-based) — works for logged-out shoppers, no account needed.
+* Per-visitor quote list stored in a cookie, so logged-out shoppers can use it without an account.
 * A `[estimate_quote]` shortcode that shows the quote list and a request form (name, email, company, message).
-* Quantity editing and item removal on the quote page.
-* On submit: emails the merchant and stores the request as a private custom post type.
+* Quantity editing and per-item removal on the quote page.
+* On submit, emails the recipient you set and saves the request as a private custom post type.
 * Configurable recipient email and storefront button text.
-* Accessible, mobile-friendly storefront markup.
-* Translation ready (POT included) and clean uninstall.
-* HPOS and cart/checkout blocks compatible.
+* The add-to-quote flow works without JavaScript; the markup uses labels and ARIA attributes and reflows on small screens.
+* Ships with a POT file for translation, plus a Polish (pl_PL) translation.
+* Declares HPOS and cart/checkout blocks compatibility.
+* On delete, removes its own options; saved quote requests are kept so a reinstall doesn't lose them.
 
 = The [estimate_quote] shortcode =
 
@@ -43,8 +48,8 @@ Create a page (e.g. "Request a Quote") and add the shortcode:
 
 `[estimate_quote]`
 
-The page shows the current quote list and the request form. If a visitor's list
-is empty, a friendly empty state links back to the shop.
+The page shows the current quote list and the request form. When the list is
+empty it shows a short message with a link back to the shop instead.
 
 == Installation ==
 
