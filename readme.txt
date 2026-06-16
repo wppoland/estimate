@@ -80,6 +80,10 @@ requests** on each product you want. Choose "All products" to apply it store-wid
 
 Yes. The list is stored in a cookie per visitor, so no account is required.
 
+= Can I hide prices on quote-enabled products? =
+
+Yes. Estimate can hide product prices while shoppers build a quote list and submit a request.
+
 == Screenshots ==
 
 1. The Add to quote button replacing add-to-cart on a product.
