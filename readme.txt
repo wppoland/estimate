@@ -1,5 +1,5 @@
 === Estimate - Request a Quote for WooCommerce ===
-Contributors: wppoland
+Contributors: motylanogha
 Tags: woocommerce, request a quote, quote, b2b, hide price
 Requires at least: 6.5
 Tested up to: 7.0
