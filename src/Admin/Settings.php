@@ -49,7 +49,7 @@ final class Settings implements HasHooks
     {
         add_submenu_page(
             'woocommerce',
-            __('Estimate — Request a Quote', 'estimate'),
+            __('Estimate: Request a Quote', 'estimate'),
             __('Estimate', 'estimate'),
             'manage_woocommerce',
             self::PAGE,
@@ -89,7 +89,7 @@ final class Settings implements HasHooks
             <div class="estimate-intro">
                 <h2><?php esc_html_e('Let customers request a quote', 'estimate'); ?></h2>
                 <p>
-                    <?php esc_html_e('Turn products into quote requests instead of direct purchases — ideal for B2B, bulk or made-to-order items. Customers build a quote list and send you their details; each request is emailed to you and saved for review.', 'estimate'); ?>
+                    <?php esc_html_e('Turn products into quote requests instead of direct purchases, ideal for B2B, bulk or made-to-order items. Customers build a quote list and send you their details; each request is emailed to you and saved for review.', 'estimate'); ?>
                 </p>
                 <p>
                     <?php
@@ -124,7 +124,7 @@ final class Settings implements HasHooks
                                         <?php esc_html_e('Show quote requests on the storefront.', 'estimate'); ?>
                                     </label>
                                     <p class="description">
-                                        <?php esc_html_e('The master switch. When off, every product keeps its normal Add to cart button and the quote list is hidden — your store behaves as a standard shop.', 'estimate'); ?>
+                                        <?php esc_html_e('The master switch. When off, every product keeps its normal Add to cart button and the quote list is hidden, so your store behaves as a standard shop.', 'estimate'); ?>
                                     </p>
                                 </td>
                             </tr>
@@ -145,7 +145,7 @@ final class Settings implements HasHooks
                                         <?php esc_html_e('Selected products only: each product stays a normal sale until you tick "Enable quote requests" on it (Product data → General). All products: every product in the store becomes quote-only and cannot be bought directly.', 'estimate'); ?>
                                     </p>
                                     <p class="description estimate-default-note">
-                                        <?php esc_html_e('Default: Selected products only — so nothing changes on your storefront until you choose the products.', 'estimate'); ?>
+                                        <?php esc_html_e('Default: Selected products only, so nothing changes on your storefront until you choose the products.', 'estimate'); ?>
                                     </p>
                                 </td>
                             </tr>

@@ -181,7 +181,7 @@ final class QuotePage implements HasHooks
     {
         ?>
         <div class="estimate-quote__notice estimate-quote__notice--success" role="status">
-            <h2><?php esc_html_e('Thank you — your request is on its way', 'estimate'); ?></h2>
+            <h2><?php esc_html_e('Thank you, your request is on its way', 'estimate'); ?></h2>
             <p><?php esc_html_e('We have received your quote request and will get back to you shortly.', 'estimate'); ?></p>
         </div>
         <?php
