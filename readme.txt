@@ -9,7 +9,7 @@ Stable tag: 0.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Let customers request a quote instead of buying directly — ideal for B2B and made-to-order.
+Let customers request a quote instead of buying directly, ideal for B2B and made-to-order.
 
 == Description ==
 
@@ -23,7 +23,7 @@ It suits B2B stores, wholesale, bulk orders and made-to-order products where
 prices are negotiated rather than fixed.
 
 The plugin isn't on WordPress.org yet. The code, releases and issue tracker
-live on GitHub: https://github.com/wppoland/estimate — bug reports and pull
+live on GitHub: https://github.com/wppoland/estimate; bug reports and pull
 requests are welcome there.
 
 = Documentation and links =
